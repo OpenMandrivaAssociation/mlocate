@@ -1,7 +1,7 @@
 Summary:  An utility for finding files by name via a central database
 Name:     mlocate
-Version:  0.15
-Release:  %mkrel 2
+Version:  0.16
+Release:  %mkrel 1
 License:  GPL
 Group:    File tools
 URL:      http://carolina.mff.cuni.cz/~trmac/blog/mlocate/
