@@ -1,11 +1,11 @@
 Summary:  An utility for finding files by name via a central database
 Name:     mlocate
-Version:  0.16
+Version:  0.17
 Release:  %mkrel 1
 License:  GPL
 Group:    File tools
 URL:      http://carolina.mff.cuni.cz/~trmac/blog/mlocate/
-Source0:  %name-%version.tar.bz2
+Source0:  http://people.redhat.com/mitr/mlocate/mlocate-%version.tar.bz2
 Source1:  updatedb.conf
 Source2:  mlocate.cron
 BuildRoot: %_tmppath/%name-%version-root
