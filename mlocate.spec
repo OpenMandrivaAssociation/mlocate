@@ -27,7 +27,7 @@ trash the system caches as much as traditional locate implementations.
 %setup -q
 
 %build
-%configure --localstatedir=/var/lib
+%configure --localstatedir=/var/lib --disable-rpath
 %make groupname=slocate
 
 %install
