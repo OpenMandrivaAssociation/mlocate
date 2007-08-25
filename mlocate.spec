@@ -1,6 +1,6 @@
 Summary:  An utility for finding files by name via a central database
 Name:     mlocate
-Version:  0.17
+Version:  0.18
 Release:  %mkrel 1
 License:  GPL
 Group:    File tools
@@ -68,5 +68,3 @@ touch /var/lib/mlocate/mlocate.db
 %_mandir/man*/*
 %dir %attr(0750,root,slocate) /var/lib/mlocate
 %ghost /var/lib/mlocate/mlocate.db
-
-
