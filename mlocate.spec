@@ -8,12 +8,12 @@ URL:      http://carolina.mff.cuni.cz/~trmac/blog/mlocate/
 Source0:  http://people.redhat.com/mitr/mlocate/mlocate-%version.tar.bz2
 Source1:  updatedb.conf
 Source2:  mlocate.cron
-BuildRoot: %_tmppath/%name-%version-root
 Requires(pre): shadow-utils
 Requires(triggerpostun): shadow-utils
 Requires(post): grep, sed
 Obsoletes: slocate <= 3.1
-Provides: slocate = %version
+Provides: slocate = %{version}
+BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Mlocate is a locate/updatedb implementation.  It keeps a database of
@@ -27,32 +27,35 @@ trash the system caches as much as traditional locate implementations.
 %setup -q
 
 %build
-%configure --localstatedir=/var/lib --disable-rpath
+%configure2_5x \
+	--localstatedir=/var/lib \
+	--disable-rpath
+
 %make groupname=slocate
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT groupname=slocate
+rm -rf %{buildroot}
+%makeinstall_std groupname=slocate
 
-mkdir -p $RPM_BUILD_ROOT%_sysconfdir/cron.daily
+mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 # install config file:
-install -c -m 644 %SOURCE1 $RPM_BUILD_ROOT%_sysconfdir/updatedb.conf
+install -c -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/updatedb.conf
 # install daily cron entry:
-install -c -m 755 %SOURCE2 $RPM_BUILD_ROOT/etc/cron.daily/mlocate.cron
+install -c -m 755 %{SOURCE2} %{buildroot}/etc/cron.daily/mlocate.cron
 # for %ghost:
-touch $RPM_BUILD_ROOT/var/lib/mlocate/mlocate.db
+touch %{buildroot}/var/lib/mlocate/mlocate.db
 
-%find_lang %name
+%find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 # for smooth updates:
 %triggerpostun -- slocate <= 3.1
-%_sbindir/groupadd -r -f slocate
+%{_sbindir}/groupadd -r -f slocate
 
 %pre
-%_sbindir/groupadd -r -f slocate 
+%{_sbindir}/groupadd -r -f slocate 
 
 %post
 # for %ghost:
@@ -61,10 +64,10 @@ touch /var/lib/mlocate/mlocate.db
 %files -f mlocate.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS README
-%config(noreplace) %_sysconfdir/updatedb.conf
-%_sysconfdir/cron.daily/mlocate.cron
-%attr(2711,root,slocate) %_bindir/locate
-%_bindir/updatedb
-%_mandir/man*/*
+%config(noreplace) %{_sysconfdir}/updatedb.conf
+%{_sysconfdir}/cron.daily/mlocate.cron
+%attr(2711,root,slocate) %{_bindir}/locate
+%{_bindir}/updatedb
+%{_mandir}/man*/*
 %dir %attr(0750,root,slocate) /var/lib/mlocate
 %ghost /var/lib/mlocate/mlocate.db
