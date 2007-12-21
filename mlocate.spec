@@ -13,6 +13,7 @@ Requires(triggerpostun): shadow-utils
 Requires(post): grep, sed
 Obsoletes: slocate <= 3.1
 Provides: slocate = %{version}
+BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Mlocate is a locate/updatedb implementation.  It keeps a database of
