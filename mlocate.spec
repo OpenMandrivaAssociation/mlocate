@@ -1,19 +1,19 @@
-Summary:  An utility for finding files by name via a central database
-Name:     mlocate
-Version:  0.20
-Release:  %mkrel 2
-License:  GPL
-Group:    File tools
-URL:      http://carolina.mff.cuni.cz/~trmac/blog/mlocate/
-Source0:  http://people.redhat.com/mitr/mlocate/mlocate-%version.tar.bz2
-Source1:  updatedb.conf
-Source2:  mlocate.cron
-Requires(pre): shadow-utils
-Requires(triggerpostun): shadow-utils
-Requires(post): grep, sed
-Obsoletes: slocate <= 3.1
-Provides: slocate = %{version}
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
+Summary:	An utility for finding files by name via a central database
+Name:		mlocate
+Version:	0.21
+Release:	%mkrel 1
+License:	GPLv2+
+Group:		File tools
+URL:		http://fedorahosted.org/mlocate/
+Source0:	http://fedorahosted.org/releases/m/l/mlocate/%{name}-%{version}.tar.bz2
+Source1:	updatedb.conf
+Source2:	mlocate.cron
+Requires(pre):	shadow-utils
+Requires(triggerpostun):	shadow-utils
+Requires(post):	grep, sed
+Obsoletes:	slocate <= 3.1
+Provides:	slocate = %{version}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Mlocate is a locate/updatedb implementation.  It keeps a database of
@@ -61,9 +61,9 @@ rm -rf %{buildroot}
 # for %ghost:
 touch /var/lib/mlocate/mlocate.db
 
-%files -f mlocate.lang
+%files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING NEWS README
+%doc AUTHORS NEWS README
 %config(noreplace) %{_sysconfdir}/updatedb.conf
 %{_sysconfdir}/cron.daily/mlocate.cron
 %attr(2711,root,slocate) %{_bindir}/locate
