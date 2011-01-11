@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.23.1
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		File tools
 URL:		http://fedorahosted.org/mlocate/
@@ -9,10 +9,6 @@ Source0:	http://fedorahosted.org/releases/m/l/mlocate/%{name}-%{version}.tar.xz
 Source1:	updatedb.conf
 Source2:	mlocate.cron
 Requires(pre):	shadow-utils
-Requires(triggerpostun):	shadow-utils
-Requires(post):	grep, sed
-Obsoletes:	slocate <= 3.1
-Provides:	slocate = %{version}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
@@ -28,7 +24,7 @@ trash the system caches as much as traditional locate implementations.
 
 %build
 %configure2_5x \
-	--localstatedir=/var/lib \
+	--localstatedir=%{_localstatedir}/lib \
 	--disable-rpath
 
 %make groupname=slocate
@@ -37,29 +33,26 @@ trash the system caches as much as traditional locate implementations.
 rm -rf %{buildroot}
 %makeinstall_std groupname=slocate
 
-mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 # install config file:
-install -c -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/updatedb.conf
+install -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/updatedb.conf
+
 # install daily cron entry:
-install -c -m 755 %{SOURCE2} %{buildroot}/etc/cron.daily/mlocate.cron
+install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.daily/mlocate.cron
+
 # for %ghost:
-touch %{buildroot}/var/lib/mlocate/mlocate.db
+touch %{buildroot}%{_localstatedir}/lib/mlocate/mlocate.db
 
 %find_lang %{name}
 
 %clean
 rm -rf %{buildroot}
 
-# for smooth updates:
-%triggerpostun -- slocate <= 3.1
-%{_sbindir}/groupadd -r -f slocate
-
 %pre
 %{_sbindir}/groupadd -r -f slocate 
 
 %post
 # for %ghost:
-touch /var/lib/mlocate/mlocate.db
+touch %{_localstatedir}/lib/mlocate/mlocate.db
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -70,4 +63,4 @@ touch /var/lib/mlocate/mlocate.db
 %{_bindir}/updatedb
 %{_mandir}/man*/*
 %dir %attr(0750,root,slocate) /var/lib/mlocate
-%ghost /var/lib/mlocate/mlocate.db
+%ghost %{_localstatedir}/lib/mlocate/mlocate.db
