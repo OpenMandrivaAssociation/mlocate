@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.24
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		File tools
 URL:		http://fedorahosted.org/mlocate/
@@ -50,7 +50,9 @@ rm -rf %{buildroot}
 if [ "$1" = "1" ]; then
 	%{_sbindir}/groupadd -r -f mlocate
 elif [ "$1" = "2" ]; then
-	%{_sbindir}/groupmod -n mlocate slocate
+	if grep	slocate	%{_sysconfdir}/group > /dev/null; then
+		%{_sbindir}/groupmod -n mlocate slocate
+	fi
 fi
 
 %post
