@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.24
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		File tools
 URL:		http://fedorahosted.org/mlocate/
@@ -9,7 +9,6 @@ Source0:	http://fedorahosted.org/releases/m/l/mlocate/%{name}-%{version}.tar.xz
 Source1:	updatedb.conf
 Source2:	mlocate.cron
 Requires(pre):	shadow-utils
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 Mlocate is a locate/updatedb implementation.  It keeps a database of
@@ -27,11 +26,11 @@ trash the system caches as much as traditional locate implementations.
 	--localstatedir=%{_localstatedir}/lib \
 	--disable-rpath
 
-%make groupname=slocate
+%make
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std groupname=slocate
+%makeinstall_std
 
 # install config file:
 install -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/updatedb.conf
@@ -48,7 +47,11 @@ touch %{buildroot}%{_localstatedir}/lib/mlocate/mlocate.db
 rm -rf %{buildroot}
 
 %pre
-%{_sbindir}/groupadd -r -f slocate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/groupadd -r -f mlocate
+elif [ "$1" = "2" ]; then
+	%{_sbindir}/groupmod -n mlocate slocate
+fi
 
 %post
 # for %ghost:
@@ -62,8 +65,8 @@ make check
 %doc AUTHORS NEWS README
 %config(noreplace) %{_sysconfdir}/updatedb.conf
 %{_sysconfdir}/cron.daily/mlocate.cron
-%attr(2711,root,slocate) %{_bindir}/locate
+%attr(2711,root,mlocate) %{_bindir}/locate
 %{_bindir}/updatedb
 %{_mandir}/man*/*
-%dir %attr(0750,root,slocate) /var/lib/mlocate
+%dir %attr(0750,root,mlocate) /var/lib/mlocate
 %ghost %{_localstatedir}/lib/mlocate/mlocate.db
