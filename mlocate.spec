@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
-Version:	0.24
-Release:	%mkrel 5
+Version:	0.26
+Release:	1
 License:	GPLv2+
 Group:		File tools
 URL:		http://fedorahosted.org/mlocate/
@@ -29,7 +29,6 @@ trash the system caches as much as traditional locate implementations.
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 # install config file:
@@ -42,9 +41,6 @@ install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/cron.daily/mlocate.cron
 touch %{buildroot}%{_localstatedir}/lib/mlocate/mlocate.db
 
 %find_lang %{name}
-
-%clean
-rm -rf %{buildroot}
 
 %pre
 if [ "$1" = "1" ]; then
@@ -63,7 +59,6 @@ touch %{_localstatedir}/lib/mlocate/mlocate.db
 make check
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc AUTHORS NEWS README
 %config(noreplace) %{_sysconfdir}/updatedb.conf
 %{_sysconfdir}/cron.daily/mlocate.cron
