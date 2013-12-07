@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	6
+Release:	7
 License:	GPLv2+
 Group:		File tools
 Url:		http://fedorahosted.org/mlocate/
