@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	13
+Release:	14
 License:	GPLv2+
 Group:		File tools
 Url:		http://fedorahosted.org/mlocate/
@@ -43,11 +43,11 @@ touch %{buildroot}%{_localstatedir}/lib/mlocate/mlocate.db
 %find_lang %{name}
 
 %pre
-if [ "$1" = "1" ]; then
+if [ $1 -eq 1 ]; then
 	if ! getent group mlocate >/dev/null 2>&1; then
 		/usr/sbin/groupadd -r -f mlocate 2>/dev/null || :
 	fi
-elif [ "$1" = "2" ]; then
+elif [ $1 -eq 2 ]; then
 	if grep	slocate	%{_sysconfdir}/group > /dev/null; then
 		%{_sbindir}/groupmod -n mlocate slocate
 	fi
