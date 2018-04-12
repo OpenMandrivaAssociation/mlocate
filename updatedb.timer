@@ -5,6 +5,7 @@ Description=Daily locate database update
 OnCalendar=daily
 AccuracySec=12h
 Persistent=true
+OnBootSec=5min
 
 [Install]
 WantedBy=timers.target
