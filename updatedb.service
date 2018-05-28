@@ -2,6 +2,14 @@
 Description=Update locate database
 
 [Service]
-Type=oneshot
+Type=idle
 ExecStart=/usr/bin/updatedb
 IOSchedulingClass=idle
+Nice=19
+IOSchedulingClass=2
+IOSchedulingPriority=7
+
+PrivateTmp=true
+PrivateDevices=true
+PrivateNetwork=true
+ProtectSystem=true
