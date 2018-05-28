@@ -9,6 +9,7 @@ Source0:	http://fedorahosted.org/releases/m/l/mlocate/%{name}-%{version}.tar.xz
 Source1:	updatedb.conf
 Source2:	updatedb.timer
 Source3:	updatedb.service
+BuildRequires:	systemd
 Requires(pre):	shadow
 Requires(post):	rpm-helper
 
