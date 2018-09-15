@@ -1,15 +1,15 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	19
+Release:	20
 License:	GPLv2+
 Group:		File tools
-Url:		http://fedorahosted.org/mlocate/
-Source0:	http://fedorahosted.org/releases/m/l/mlocate/%{name}-%{version}.tar.xz
+Url:		https://pagure.io/mlocate
+Source0:	https://releases.pagure.org/%{name}/%{name}-%{version}.tar.xz
 Source1:	updatedb.conf
 Source2:	updatedb.timer
 Source3:	updatedb.service
-BuildRequires:	systemd
+BuildRequires:	systemd-macros
 Requires(pre):	shadow
 Requires(post):	rpm-helper
 
@@ -54,14 +54,8 @@ EOF
 %find_lang %{name}
 
 %pre
-if [ $1 -eq 1 ]; then
-    if ! getent group mlocate >/dev/null 2>&1; then
-	/usr/sbin/groupadd -r -f mlocate 2>/dev/null || :
-    fi
-elif [ $1 -eq 2 ]; then
-    if grep	slocate	%{_sysconfdir}/group > /dev/null; then
-	%{_sbindir}/groupmod -n mlocate slocate
-    fi
+if [ "$1" = "1" ]; then
+	%{_sbindir}/groupadd -r -f mlocate
 fi
 
 %post
