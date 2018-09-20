@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	20
+Release:	21
 License:	GPLv2+
 Group:		File tools
 Url:		https://pagure.io/mlocate
@@ -54,12 +54,8 @@ EOF
 %find_lang %{name}
 
 %pre
-if [ "$1" = "1" ]; then
-	%{_sbindir}/groupadd -r -f mlocate
-fi
-
-%post
-%create_ghostfile %{_localstatedir}/lib/mlocate/mlocate.db root mlocate 0640
+getent group mlocate >/dev/null || groupadd -r -f mlocate
+exit 0
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS README
@@ -72,4 +68,3 @@ fi
 %{_unitdir}/updatedb.service
 %dir %attr(0750,root,mlocate) /var/lib/mlocate
 %ghost %attr(0640,root,mlocate) %{_localstatedir}/lib/mlocate/mlocate.db
-
