@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	21
+Release:	22
 License:	GPLv2+
 Group:		File tools
 Url:		https://pagure.io/mlocate
@@ -11,7 +11,7 @@ Source2:	updatedb.timer
 Source3:	updatedb.service
 BuildRequires:	systemd-macros
 Requires(pre):	shadow
-Requires(post):	rpm-helper
+Requires(pre):	rpm-helper
 
 %description
 Mlocate is a locate/updatedb implementation.  It keeps a database of
@@ -22,20 +22,20 @@ rereading most of the file system, which makes updatedb faster and does not
 trash the system caches as much as traditional locate implementations.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 %configure \
 	--localstatedir=%{_localstatedir}/lib \
 	--disable-rpath
 
-%make
+%make_build
 
 %check
 make check
 
 %install
-%makeinstall_std
+%make_install
 
 # install config file:
 install -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/updatedb.conf
