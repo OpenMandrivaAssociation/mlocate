@@ -6,7 +6,6 @@ OnCalendar=daily
 AccuracySec=12h
 Persistent=true
 OnBootSec=5min
-Persistent=true
 
 [Install]
 WantedBy=timers.target
