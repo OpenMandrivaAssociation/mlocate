@@ -1,7 +1,7 @@
 Summary:	An utility for finding files by name via a central database
 Name:		mlocate
 Version:	0.26
-Release:	24
+Release:	25
 License:	GPLv2+
 Group:		File tools
 Url:		https://pagure.io/mlocate
@@ -56,7 +56,7 @@ EOF
 
 %pre
 if [ "$1" = "1" ]; then
-	%{_sbindir}/groupadd -r -f mlocate
+    %{_sbindir}/groupadd -r -f mlocate
 fi
 
 %files -f %{name}.lang
