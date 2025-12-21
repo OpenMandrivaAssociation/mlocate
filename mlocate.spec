@@ -10,6 +10,11 @@ Source1:	updatedb.conf
 Source2:	updatedb.timer
 Source3:	updatedb.service
 Source4:	mlocate.sysusers
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	systemd-macros
 Requires(pre):	shadow
 
